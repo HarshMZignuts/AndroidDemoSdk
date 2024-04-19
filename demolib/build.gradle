@@ -46,10 +46,7 @@ android {
 //            name "GithubPackages"
 //            //this will change for all libs
 //            url uri("https://maven.pkg.github.com/HarshMZignuts/AndroidDemoSdk")
-//            credentials{
-//                username = "HarshMZignuts"
-//                password = "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"
-//            }
+
 //        }
 //
 //    }
