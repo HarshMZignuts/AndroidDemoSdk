@@ -1,6 +1,8 @@
 plugins {
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+    id 'signing'
 }
 
 android {
@@ -29,6 +31,140 @@ android {
     }
 }
 
+//publishing{
+//    publications{
+//        bar(MavenPublication){
+//            groupId = "com.example"
+//            artifactId = "demolib"
+//            version = "0.1-alpha"
+////            artifact ("$buildDir/outputs/aar/demolib-release.arr")
+//        }
+//    }
+//    repositories {
+//        maven {
+//            //this is comman
+//            name "GithubPackages"
+//            //this will change for all libs
+//            url uri("https://maven.pkg.github.com/HarshMZignuts/AndroidDemoSdk")
+//            credentials{
+//                username = "HarshMZignuts"
+//                password = "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"
+//            }
+//        }
+//
+//    }
+//}
+
+
+
+
+
+
+//task androidJavadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    android.libraryVariants.all { variant ->
+//        if (variant.name == 'release') {
+//            owner.classpath += variant.javaCompileProvider.get().classpath
+//        }
+//    }
+//
+//    exclude '**/R.html', '**/R.*.html', '**/index.html'
+//    options.encoding 'utf-8'
+//    options {
+//        addStringOption 'docencoding', 'utf-8'
+//        addStringOption 'charset', 'utf-8'
+//        links 'https://docs.oracle.com/javase/7/docs/api/'
+//        links 'https://d.android.com/reference'
+//        links 'https://developer.android.com/reference/androidx/'
+//    }
+//}
+//
+//task androidJavadocJar(type: Jar, dependsOn: androidJavadoc) {
+//    archiveClassifier.set('javadoc')
+//    from androidJavadoc.destinationDir
+//
+//    preserveFileTimestamps = false
+//    reproducibleFileOrder = true
+//}
+//
+//task javaSourcesJar(type: Jar) {
+//    archiveClassifier.set('sources')
+//    from android.sourceSets.main.java.srcDirs
+//
+//    preserveFileTimestamps = false
+//    reproducibleFileOrder = true
+//}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+
+                from components.release
+
+//                artifact androidJavadocJar
+//                artifact javaSourcesJar
+
+                groupId 'com.example'
+                version '0.2-alpha'
+                pom {
+                    name = "demolib"
+                    description = ""
+
+                    scm {
+                        connection = 'scm:git@github.com:HarshMZignuts/AndroidDemoSdk.git'
+                        url = 'https://github.com/HarshMZignuts/AndroidDemoSdk.git'
+                    }
+//                    developers {
+//                        developer {
+//                            id = POM_DEVELOPER_ID
+//                            name = POM_DEVELOPER_NAME
+//                            email = POM_DEVELOPER_EMAIL
+//                        }
+//                    }
+                }
+
+
+
+            }
+        }
+        repositories {
+            maven {
+                name = "SonatypeSnapshot"
+
+//                def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+//                def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+//                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+
+                credentials {
+                    username "WgFuur64"
+                    password "/ehWl0lbc7a/TPKnHt/PksS0Ziln+C606wU46jS8MCDK"
+                }
+            }
+
+            maven {
+                name = "sonatype"
+
+//                def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+//                def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+//                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+
+                credentials {
+                    username "WgFuur64"
+                    password "/ehWl0lbc7a/TPKnHt/PksS0Ziln+C606wU46jS8MCDK"
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications
+}
+
 dependencies {
 
     implementation libs.androidx.core.ktx
@@ -38,3 +174,4 @@ dependencies {
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core
 }
+
